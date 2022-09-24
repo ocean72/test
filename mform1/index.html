@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="jp">
+	<head>
+		<title>お問い合わせ</title>
+		<meta charset="utf-8">
+
+		<!--jquery読み込み-->
+		<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<!--デザイン調整CSS-->
+<style>
+*{ margin:0; padding:0; font-size: 16px;}
+body{ padding:5%}
+h1{ text-align: center; font-size: 24px; font-weight: normal; margin:0 0 20px 0;}
+section{ width:80%; margin:0 auto;}
+table{ width:100%; margin:20px auto 20px auto; border-collapse:collapse;}
+th, td{ padding:10px 15px; border:1px solid #999; font-weight:normal; text-align: left; }
+th{ background: #eee; positon:relative; width:30%; }
+td{ background:#fff; }
+input{ padding:5px; }
+textarea{ padding:5px; width:90%; }
+th span{ font-size:12px; background: #f40; color:#fff; padding:0 3px; border-radius:3px; position: :absolute; right:15px; }
+.submit-button{ text-align:center; }
+button{ background: #09e; border:0; border-radius: 5px; padding:15px 50px; color:#fff; font-size: 18px; transition:.3s; }
+button:hover{ cursor: pointer; background: #18c; }
+.err{ background: #c00; color:#fff; padding:5px 15px; display:none; }
+#end{ padding:5%; text-align: center; display: none;}
+#end h1{ color:#09e; }
+#end div{ border:1px solid #ccc; background: #fff; padding:5% 0; }
+</style>
+
+
+</head>
+<body>
+
+<!--お問い合わせフォーム-->
+<section id="frm">
+	<h1>お問い合わせフォーム</h1>
+	<p class="err"></p>
+	<table>
+		<tr>
+			<th>お名前<span>必須</span></th>
+			<td><input type="text" name="name"></td>
+		</tr>
+		<tr>
+			<th>性別<span>必須</span></th>
+				<td>
+					<input type="radio" name="gender" value="男性">男性
+					<input type="radio" name="gender" value="女性">女性
+				</td>
+		</tr>
+		<tr>
+			<th>電話番号<span>必須</span></th>
+			<td><input type="text" name="tel"></td>
+		</tr>
+		<tr>
+			<th>メールアドレス<span>必須</span></th>
+			<td><input type="text" name="mail"></td>
+		</tr>
+		<tr>
+			<th>内容<span>必須</span></th>
+			<td><textarea name="message" rows="5"></textarea></td>
+
+
+		</tr>
+	</table>
+	<div class="submit-button"><button>送信する</button></div>
+</section>
+
+<!--完了画面-->
+<section id="end">
+	<div>
+		<h1>メール送信完了</h1>
+		<p>
+			お問い合わせありがとうございます。<br>
+			担当者が確認後、折返しご連絡致します。
+		</p>
+	</div>
+</section>
+
+<!--フォーム動作スクリプト-->
+<script>
+$("button").click(function () {
+
+	//入力されたデータを受け取る
+	var name = $('[name="name"]').val();
+	var gender = $('[name="gender"]:checked').val();
+	var tel = $('[name="message"]').val();
+	var mail = $('[name="mail"]').val();
+	var message = $('[name="message"]').val();
+
+	var flag = 0;			//入力エラーのフラグ
+	var err = [];			//エラーメッセージ配列
+	var err_message = ''; 	//エラーメッセージ出力
+
+	//必須科目の入力チェック
+	if(!name || !gender !! !tel || !message){
+		err[1] = "必須項目に未入力があります";
+		flag = 1;
+	}else{
+		//電話番号の入力チェック
+		if (!tel.match(/^[0-9]+$)){
+			err[2]- "・電話番号が正しく入力されていません";
+			flag = 1;
+		}
+	
+		//メールアドレスの入力チェック
+		if(mail){
+			if (!mail.match(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-z0-9-]+)*$/)){
+				err[3] = "・メールアドレスが正しく入力されていません";
+				flag = 1;
+			}
+		}
+	}
+			
+	if(flag ==1){
+		//エラーメッセージを連結
+		for(i = 1; i < err.length; i++) {
+			if(err[i]) err_message = err_message + err[i] + "<br>");
+		}
+		$('.err').html(err_message).show(); //エラー出色
+	}else{
+		$('#frm').hide(); //フォームを非表示に
+		$('#end').fadeIn(); //送信完了画面を表示
+	}		
+})
+</script>
+
+
+</body>
+</html>
